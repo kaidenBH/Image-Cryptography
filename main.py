@@ -57,11 +57,12 @@ class Widget(QMainWindow):
             self.ciG.setEnabled(False), self.ciG.setText('')
             self.ciB.setEnabled(False), self.ciB.setText('')
             self.diffG.setEnabled(False), self.diffG.setText('')
-        elif valueDiff == 1 :
+        elif valueDiff == 1 or valueDiff == 2:
             self.ciR.setEnabled(True), self.ciR.setText('')
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(True), self.diffG.setText('')
+        
 
 
         if ValueTran == 0:
