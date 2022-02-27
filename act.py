@@ -83,7 +83,8 @@ def FridDeffusion(image, cr,cg,cb, g):
             if col == 0 and row == 0:
                 continue
             elif col == 0 and row != 0:
-                pass
+                p = np.add(image[row,col] , (g*newIm[row-1,w-1])% (w*h))
+                newIm[row,col] = p
             else:
                 p = np.add(image[row,col] , (g*newIm[row,col-1])% (w*h))
                 newIm[row,col] = p
