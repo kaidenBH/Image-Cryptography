@@ -80,7 +80,7 @@ class Widget(QMainWindow):
 
     def addimageToview(self):
         try:
-            imageFile = QFileDialog.getOpenFileName(None, "Open image", "C:/Users/ROG/Desktop/master 2/MEMOIR/progrm/Images", "Image Files (*.png *.jpg *.bmp *.jpeg *.png *.jfif)")
+            imageFile = QFileDialog.getOpenFileName(None, "Open image", "./Images", "Image Files (*.png *.jpg *.bmp *.jpeg *.png *.jfif)")
             self.imagename= str(imageFile[0])
             self.showimage()
             self.pixel = tools.getImage(self.imagename)
