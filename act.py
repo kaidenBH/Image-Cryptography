@@ -81,7 +81,8 @@ def FridDeffusion(image, cr,cg,cb, g):
     for row in range(h):
         for col in range(w):
             if col == 0 and row == 0:
-                continue
+                p = np.add(image[row,col] , (g*newIm[0,0])% (256))
+                newIm[row,col] = p
             elif col == 0 and row != 0:
                 p = np.add(image[row,col] , (g*newIm[row-1,w-1])% (256))
                 newIm[row,col] = p
@@ -89,4 +90,21 @@ def FridDeffusion(image, cr,cg,cb, g):
                 p = np.add(image[row,col] , (g*newIm[row,col-1])% (256))
                 newIm[row,col] = p
 
-    return newIm,'Cat_map'
+    return newIm,'frid_Deff'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def FridDecrypt(image, cr,cg,cb, g):
+    w,h = image.shape[1],image.shape[0]
+    newIm = np.full((h,w, 3), [cr,cg,cb], dtype = np.uint8)
+    for row in range(h):
+        for col in range(w):
+            if col == 0 and row == 0:
+                p = (image[row,col] - (g*newIm[0][0])% (256))
+                newIm[row,col] = p
+            elif col == 0 and row != 0:
+                p = (image[row,col] - (g*image[row-1,w-1])% (256))
+                newIm[row,col] = p
+            else:
+                p = (image[row,col] - (g*image[row,col-1])% (256))
+                newIm[row,col] = p
+
+    return newIm,'frid_decrypt'

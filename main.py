@@ -28,6 +28,11 @@ class Widget(QMainWindow):
             newImg, name = act.FridDeffusion(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),int(g))
             self.savedImg = tools.SaveImage(newImg, name)
             self.showimageResult('Images/Saved/'+name+'.png')
+        elif valueDiff == 2:
+            cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
+            newImg, name = act.FridDecrypt(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),int(g))
+            self.savedImg = tools.SaveImage(newImg, name)
+            self.showimageResult('Images/Saved/'+name+'.png')
 
     def Transformations(self):
             ValueTrans = self.transChoice.currentIndex()
