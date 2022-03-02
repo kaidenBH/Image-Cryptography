@@ -13,6 +13,7 @@ class Widget(QMainWindow):
         loadUi("assets/memoir.ui",self)
         self.setWindowTitle("Memoir")
 
+        self.histogram.clicked.connect(self.Histogram)
         self.startTrans.clicked.connect(self.Transformations)
         self.startTrans_Diffusion.clicked.connect(self.Diffusion)
         self.transChoice.currentIndexChanged.connect(self.checkTransOption)
@@ -37,7 +38,12 @@ class Widget(QMainWindow):
             self.showimageResult('Images/Saved/'+name+'.png')
         elif valueDiff == 3:
             cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
-            newImg, name = act.chenDiffusion(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb))
+            newImg, name,self.chenXi = act.chenDiffusion(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb))
+            self.savedImg = tools.SaveImage(newImg, name)
+            self.showimageResult('Images/Saved/'+name+'.png')
+        elif valueDiff == 4:
+            cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
+            newImg, name = act.chenDecrypt(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),self.chenXi)
             self.savedImg = tools.SaveImage(newImg, name)
             self.showimageResult('Images/Saved/'+name+'.png')
         print("Diffusion time: ",round(time.time() - tStart,3))
@@ -72,14 +78,12 @@ class Widget(QMainWindow):
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(True), self.diffG.setText('')
-        elif valueDiff == 3:
+        elif valueDiff == 3 or valueDiff == 4:
             self.ciR.setEnabled(True), self.ciR.setText('')
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(False), self.diffG.setText('')
         
-
-
         if ValueTran == 0:
             self.Times.setEnabled(False), self.Times.setText('')
             self.Cata.setEnabled(False), self.Cata.setText('')
@@ -92,6 +96,26 @@ class Widget(QMainWindow):
             self.Cata.setEnabled(True), self.Cata.setText('')
             self.Catb.setEnabled(True), self.Catb.setText('')
             self.Times.setEnabled(False), self.Times.setText('')
+
+    def Histogram(self):
+
+        imageFile = QFileDialog.getOpenFileName(None, "Open image", "./Images", "Image Files (*.png *.jpg *.bmp *.jpeg *.png *.jfif)")
+        image1= str(imageFile[0])
+        imageFile = QFileDialog.getOpenFileName(None, "Open image", "./Images", "Image Files (*.png *.jpg *.bmp *.jpeg *.png *.jfif)")
+        image2= str(imageFile[0])
+        histIm1, histIm2 = act.Hist_RGB(tools.getImage(image1)), act.Hist_RGB(tools.getImage(image2))
+        fig = plt.figure(figsize=(15, 8))
+        ax1 = fig.add_subplot(121)
+        plt.title("image 1")
+        ax2 = fig.add_subplot(122)
+        plt.title("image 2")
+        if len(histIm1) == 3:
+            ax1.plot(histIm1[0], color = 'red'), ax1.plot(histIm1[1], color = 'green'), ax1.plot(histIm1[2], color = 'blue')
+            ax2.plot(histIm2[0], color = 'red'), ax2.plot(histIm2[1], color = 'green'), ax2.plot(histIm2[2], color = 'blue')
+        else:
+            ax1.plot(histIm1)
+            ax2.plot(histIm2)
+        plt.show()
 
     def showimage(self):
         self.codeImg.setPixmap(QtGui.QPixmap(self.imagename))  

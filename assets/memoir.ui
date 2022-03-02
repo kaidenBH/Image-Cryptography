@@ -313,6 +313,11 @@
            <string>chen Diffusion</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>chen Decrypt</string>
+          </property>
+         </item>
         </widget>
         <widget class="QLineEdit" name="ciR">
          <property name="enabled">
@@ -404,7 +409,7 @@
          <rect>
           <x>710</x>
           <y>10</y>
-          <width>731</width>
+          <width>551</width>
           <height>41</height>
          </rect>
         </property>
@@ -434,6 +439,24 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="histogram">
+        <property name="geometry">
+         <rect>
+          <x>1290</x>
+          <y>10</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Histograms</string>
         </property>
        </widget>
       </widget>
