@@ -308,6 +308,11 @@
            <string>Fridrich Decrypt</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>chen Diffusion</string>
+          </property>
+         </item>
         </widget>
         <widget class="QLineEdit" name="ciR">
          <property name="enabled">

@@ -5,6 +5,7 @@ import cv2
 from PIL import Image
 import tools, time, act
 import matplotlib.pyplot as plt
+import time
 
 class Widget(QMainWindow):
     def __init__(self):
@@ -21,6 +22,7 @@ class Widget(QMainWindow):
         self.SaveImg.clicked.connect(self.save_Image)
 
     def Diffusion(self):
+        tStart = time.time()
         valueDiff = self.transChoice_Diffusion.currentIndex()
         if valueDiff == 0: self.showimage()
         elif valueDiff == 1:
@@ -33,21 +35,29 @@ class Widget(QMainWindow):
             newImg, name = act.FridDecrypt(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),int(g))
             self.savedImg = tools.SaveImage(newImg, name)
             self.showimageResult('Images/Saved/'+name+'.png')
+        elif valueDiff == 3:
+            cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
+            newImg, name = act.chenDiffusion(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb))
+            self.savedImg = tools.SaveImage(newImg, name)
+            self.showimageResult('Images/Saved/'+name+'.png')
+        print("Diffusion time: ",round(time.time() - tStart,3))
 
     def Transformations(self):
-            ValueTrans = self.transChoice.currentIndex()
-            if ValueTrans == 0: self.showimage()
-            elif ValueTrans == 1:
-                factor = tools.checkNull(self.Times.text())
-                newImg, name = act.BackedMap(self.pixel, int(factor), ValueTrans)
-                #newImg, name = act.stretchImage(self.pixel,int(factor))
-                self.savedImg = tools.SaveImage(newImg, name)
-                self.showimageResult('Images/Saved/'+name+'.png')
-            elif ValueTrans == 2:
-                a,b = tools.checkNull(self.Cata.text()),tools.checkNull(self.Catb.text())
-                newImg, name = act.catMap(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(a),  int(b))
-                self.savedImg = tools.SaveImage(newImg, name)
-                self.showimageResult('Images/Saved/'+name+'.png')
+        tStart = time.time()
+        ValueTrans = self.transChoice.currentIndex()
+        if ValueTrans == 0: self.showimage()
+        elif ValueTrans == 1:
+            factor = tools.checkNull(self.Times.text())
+            newImg, name = act.BackedMap(self.pixel, int(factor), ValueTrans)
+            #newImg, name = act.stretchImage(self.pixel,int(factor))
+            self.savedImg = tools.SaveImage(newImg, name)
+            self.showimageResult('Images/Saved/'+name+'.png')
+        elif ValueTrans == 2:
+            a,b = tools.checkNull(self.Cata.text()),tools.checkNull(self.Catb.text())
+            newImg, name = act.catMap(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(a),  int(b))
+            self.savedImg = tools.SaveImage(newImg, name)
+            self.showimageResult('Images/Saved/'+name+'.png')
+        print("Substitution time: ",round(time.time() - tStart,3))
 
     def checkTransOption(self):
         ValueTran = self.transChoice.currentIndex()
@@ -62,6 +72,11 @@ class Widget(QMainWindow):
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(True), self.diffG.setText('')
+        elif valueDiff == 3:
+            self.ciR.setEnabled(True), self.ciR.setText('')
+            self.ciG.setEnabled(True), self.ciG.setText('')
+            self.ciB.setEnabled(True), self.ciB.setText('')
+            self.diffG.setEnabled(False), self.diffG.setText('')
         
 
 

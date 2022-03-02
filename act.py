@@ -1,6 +1,7 @@
 import cv2
+from numpy import zeros_like
 from GeometricTransformations import *
-
+import random
 def TransformationsGeo(image, imageCV, x, y, angle, factor, Value):
     if factor < 0: factorCV = 1/abs(factor - 1)
     else: factorCV = factor
@@ -108,3 +109,23 @@ def FridDecrypt(image, cr,cg,cb, g):
                 newIm[row,col] = p
 
     return newIm,'frid_decrypt'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def chenDiffusion(image,cr,cg,cb):
+    Q=0
+    xi = 0
+    ci = [cr,cg,cb]
+    newIm = zeros_like(image)
+    while Q>0.8 or Q<0.2:
+        xi = round(random.random(),2)
+        Q = 4*xi*(1-xi)
+        #print(Q,"            ",xi,"\n")
+
+    w,h = image.shape[1],image.shape[0]
+    for row in range(h):
+        for col in range(w):
+            p = round(Q*255) ^ ((image[row,col]+round(Q*255))%256) ^ ci
+            newIm[row,col] = p
+            ci = p
+            Q = 4*Q*(1-Q)
+    return newIm,'Chen_diff'
+    
