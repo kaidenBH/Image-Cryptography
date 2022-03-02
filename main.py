@@ -39,11 +39,13 @@ class Widget(QMainWindow):
         elif valueDiff == 3:
             cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
             newImg, name,self.chenXi = act.chenDiffusion(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb))
+            myXi = "Xi: "+ str(self.chenXi)
+            self.chenX.setText(myXi)
             self.savedImg = tools.SaveImage(newImg, name)
             self.showimageResult('Images/Saved/'+name+'.png')
         elif valueDiff == 4:
             cr,cg,cb,g = tools.checkNull(self.ciR.text()),tools.checkNull(self.ciG.text()),tools.checkNull(self.ciB.text()),tools.checkNull(self.diffG.text())
-            newImg, name = act.chenDecrypt(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),self.chenXi)
+            newImg, name = act.chenDecrypt(cv2.cvtColor(cv2.imread(self.imagename), cv2.COLOR_BGR2RGB), int(cr),int(cg),int(cb),float(g))
             self.savedImg = tools.SaveImage(newImg, name)
             self.showimageResult('Images/Saved/'+name+'.png')
         print("Diffusion time: ",round(time.time() - tStart,3))
@@ -73,16 +75,25 @@ class Widget(QMainWindow):
             self.ciG.setEnabled(False), self.ciG.setText('')
             self.ciB.setEnabled(False), self.ciB.setText('')
             self.diffG.setEnabled(False), self.diffG.setText('')
+            self.label_3.setText("G")
         elif valueDiff == 1 or valueDiff == 2:
             self.ciR.setEnabled(True), self.ciR.setText('')
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(True), self.diffG.setText('')
-        elif valueDiff == 3 or valueDiff == 4:
+            self.label_3.setText("G")
+        elif valueDiff == 3 :
             self.ciR.setEnabled(True), self.ciR.setText('')
             self.ciG.setEnabled(True), self.ciG.setText('')
             self.ciB.setEnabled(True), self.ciB.setText('')
             self.diffG.setEnabled(False), self.diffG.setText('')
+            self.label_3.setText("Xi")
+        elif valueDiff == 4:
+            self.ciR.setEnabled(True), self.ciR.setText('')
+            self.ciG.setEnabled(True), self.ciG.setText('')
+            self.ciB.setEnabled(True), self.ciB.setText('')
+            self.diffG.setEnabled(True), self.diffG.setText('')
+            self.label_3.setText("Xi")
         
         if ValueTran == 0:
             self.Times.setEnabled(False), self.Times.setText('')
